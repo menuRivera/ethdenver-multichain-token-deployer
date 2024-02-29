@@ -1,0 +1,4 @@
+node_modules/
+.dfx/
+.azle/
+src/frontend/dist
