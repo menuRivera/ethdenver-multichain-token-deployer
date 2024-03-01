@@ -1,11 +1,12 @@
+/* Add this to your App.css file */
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color: rgba(169, 33, 33, 0.87);
+  background-color: #bc9494;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -16,7 +17,7 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #ffffff;
   text-decoration: inherit;
 }
 a:hover {
@@ -43,7 +44,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #8c1818;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -57,7 +58,7 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #a8c5df;
     background-color: #ffffff;
   }
   a:hover {
@@ -66,4 +67,83 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+  /* Last line */
+  button:focus,
+  button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+}
+
+/* New styles for the form */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #242424;
+}
+
+.card {
+  background-color: #000000;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #535bf2;
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: #ffffff;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #535bf2;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button[type="submit"]:hover {
+  background-color: #747bff;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+label.checkbox-label {
+  margin-left: 8px;
+  color: #ffffff;
+}
+
+/* Additional styling for form attributes and files */
+.attribute-group,
+.file-group {
+  display: flex;
+  gap: 8px;
+}
+
+.file-group input[type="checkbox"] {
+  margin-top: 0;
+}
+
+/* Adjusted spacing for the "Add Attribute" and "Add File" buttons */
+button[type="button"] {
+  margin-top: 8px;
 }
