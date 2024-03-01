@@ -1,26 +1,22 @@
 import { Server } from 'azle';
-import express, { Request } from 'express';
-
-let db = {
-    hello: ''
-};
+import express from 'express';
 
 export default Server(() => {
-    const app = express();
+	const app = express();
 
-    app.use(express.json());
+	app.use(express.json());
 
-    app.get('/db', (req, res) => {
-        res.json(db);
-    });
+	app.get('/test', (req, res) => {
+		res.json({ success: true })
+	})
 
-    app.post('/db/update', (req: Request<any, any, typeof db>, res) => {
-        db = req.body;
+	app.post('/token', (req, res) => {
+		// todo: deploy the token
+		res.json({ success: true });
+	});
 
-        res.json(db);
-    });
+	app.use(express.static('/dist'));
 
-    app.use(express.static('/dist'));
-
-    return app.listen();
+	return app.listen();
 });
+
