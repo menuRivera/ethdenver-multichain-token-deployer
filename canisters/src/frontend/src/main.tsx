@@ -9,7 +9,7 @@ const theme: Theme = {
 		primary: {
 			backgroundColor: '#ece5e5',
 			borderRadius: '10px',
-			margin: '10vh 10vw',
+			margin: '5vh 10vw',
 			padding: '100px',
 			boxShadow: '5px 5px 20px 10px lightGray'
 		}

@@ -41,11 +41,12 @@ function App() {
 		<div className="container">
 			<Card>
 				<Box as="form" onSubmit={handleSubmit}>
+
 					{connected
 						? <Text color='green'>Connected</Text>
 						: <Spinner title='Connecting...'></Spinner>
 					}
-					<Image sx={{ width: '50%', margin: 'auto' }} src='/Token_Magician.png'></Image>
+					<Image sx={{ width: '40%', margin: 'auto' }} src='/Token_Magician.png'></Image>
 
 					<Label>
 						Name

@@ -10,4 +10,9 @@ form {
 Label {
 	display: flex;
 	flex-direction: column;
+	margin-bottom: 20px !important;
+}
+
+Input, Button {
+	height: 50px;
 }
