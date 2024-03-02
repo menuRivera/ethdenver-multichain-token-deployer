@@ -9,6 +9,7 @@ enum EthMethod {
 	sendRawTransaction = 'eth_sendRawTransaction',
 	getTransactionReceipt = 'eth_getTransactionReceipt',
 	estimateGas = 'eth_estimateGas',
+	gasPrice = 'eth_gasPrice',
 }
 
 export class EvmRpc {
@@ -17,30 +18,12 @@ export class EvmRpc {
 	chain: IChain;
 
 	constructor(thresholdSigner: ThresholdECDSA, chainName: string) {
-		this.address = 'icp://be2us-64aaa-aaaaa-qaabq-cai';
+		this.address = 'icp://bkyz2-fmaaa-aaaaa-qaaaq-cai';
 		this.thresholdSigner = thresholdSigner;
 		this.chain = chains.find(chain => chain.name === chainName)!
 	}
 
-	private async callNative(ethMethod: EthMethod, params: any) {
-		console.log('EvmRpc.callNative() called')
-		const response = await fetch(`${this.address}/${ethMethod}`,
-			{
-				body: serialize({
-					candidPath: '/src/evm_rpc.did',
-					args: [
-						{ Custom: chains[0] }, // change this
-						[],
-						params
-					],
-					cycles: 1_000_000_000
-				})
-			}
-		);
-		return response.json();
-	}
-
-	private async callCustom(method: string, params: any[]) {
+	private async call(method: EthMethod, params: any[]) {
 		console.log('EvmRpc.callCustom() called')
 		const response = await fetch(`${this.address}/request`, {
 			body: serialize({
@@ -65,20 +48,26 @@ export class EvmRpc {
 		return response.json()
 	}
 
+	// getTransactionCount() {
+	// 	return this.callNative(EthMethod.getTransactionCount, {
+	// 		address: this.thresholdSigner.publicKey,
+	// 		block: { Latest: null }
+	// 	})
+	// }
 	getTransactionCount() {
-		return this.callNative(EthMethod.getTransactionCount, {
-			address: this.thresholdSigner.publicKey,
-			block: { Latest: null }
-		})
+		return this.call(EthMethod.getTransactionCount, [
+			this.thresholdSigner.publicKey,
+			'latest'
+		])
 	}
-	getTransactionReceipt(txHash: string) {
-		return this.callNative(EthMethod.getTransactionReceipt, txHash)
-	}
-	sendRawTransaction(tx: string) {
-		// todo: validate tx
-		return this.callNative(EthMethod.sendRawTransaction, tx)
-	}
+	// getTransactionReceipt(txHash: string) {
+	// 	return this.callNative(EthMethod.getTransactionReceipt, txHash)
+	// }
+	// sendRawTransaction(tx: string) {
+	// 	// todo: validate tx
+	// 	return this.callNative(EthMethod.sendRawTransaction, tx)
+	// }
 	getGasPrice() {
-		return this.callCustom('eth_gasPrice', [])
+		return this.call(EthMethod.gasPrice, [])
 	}
 }

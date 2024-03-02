@@ -12,6 +12,10 @@
 				[
 					"src/frontend/dist",
 					"dist"
+				],
+				[
+					"src/evm_rpc.did",
+					"src/evm_rpc.did"
 				]
 			],
 			"build_assets": "npm run build",

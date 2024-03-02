@@ -21,25 +21,22 @@ export default Server(() => {
 
 	app.post('/gasprice', async (req, res) => {
 		try {
-			console.log('request found')
-
 			const thresholdSigner = new ThresholdECDSA()
-			console.log('thresholdSigner created')
 
 			await thresholdSigner.start()
-			console.log('thresholdSigner created')
-
 			const evmRpc = new EvmRpc(thresholdSigner, 'ethereum-sepolia')
-			console.log('evmRpc created for sepolia')
 
 			const gasPrice = await evmRpc.getGasPrice()
-			console.log('Gasprice')
-			console.log(gasPrice)
+
+			console.log(JSON.parse(gasPrice.Ok))
 
 			// const gasPromises = chains.map(chain => new EvmRpc(thresholdSigner, chain.name).getGasPrice())
 			// const gasPrices = await Promise.all(gasPromises)
 
-			res.json(JSON.stringify(gasPrice))
+			res.json({
+				success: true,
+				data: JSON.parse(gasPrice.Ok)
+			})
 		} catch (error) {
 			console.error(JSON.stringify(error))
 			res.json({

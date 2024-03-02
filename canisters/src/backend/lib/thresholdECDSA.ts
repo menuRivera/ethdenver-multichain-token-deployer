@@ -8,7 +8,7 @@ export class ThresholdECDSA {
 		console.log('ThresholdECDSA.start()')
 		const publicKey = await getPublicKeyResult()
 
-		this.publicKey = publicKey
+		this.publicKey = publicKey.public_key
 	}
 
 	async sign(messageHash: Uint8Array) {
@@ -28,16 +28,6 @@ export class ThresholdECDSA {
 async function getPublicKeyResult() {
 	console.log('getPublicKeyResult')
 	const caller = ic.caller().toUint8Array()
-	console.log(caller)
-
-
-	console.log('right before raw_rand')
-	const resultIcCall = await ic.call(managementCanister.raw_rand);
-
-	console.log('resultIcCall', resultIcCall)
-	const result = await fetch('icp://aaaaa-aa/raw_rand');
-
-	console.log('result', result);
 
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/ecdsa_public_key`,
@@ -59,12 +49,12 @@ async function getPublicKeyResult() {
 	console.log('response: ', publicKeyResponse)
 
 	const res = await publicKeyResponse.json()
-	console.log({ res })
-
-	return res
+	return res as { public_key: Uint8Array, chain_code: Uint8Array }
 }
 
 async function getSignatureResult(messageHash: Uint8Array) {
+	const caller = ic.caller().toUint8Array()
+
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/sign_with_ecdsa`,
 		{
@@ -72,7 +62,7 @@ async function getSignatureResult(messageHash: Uint8Array) {
 				args: [
 					{
 						message_hash: messageHash,
-						derivation_path: [],
+						derivation_path: [caller],
 						key_id: {
 							curve: { secp256k1: null },
 							name: 'dfx_test_key'
