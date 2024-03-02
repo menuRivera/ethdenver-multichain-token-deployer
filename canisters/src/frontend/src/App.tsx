@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Box, Button, Card, Image, Input, Label } from 'theme-ui';
+import { useEffect, useState } from 'react';
+import { Box, Button, Card, Image, Input, Label, Spinner, Text } from 'theme-ui';
+
+const baseUrl = import.meta.env.VITE_CANISTER_ORIGIN
 
 function App() {
 
@@ -7,6 +9,18 @@ function App() {
 	const [symbol, setSymbol] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState('')
+	const [connected, setConnected] = useState(false)
+
+	useEffect(() => {
+		getServerStatus()
+	})
+
+	const getServerStatus = async () => {
+		const response = await fetch(`${baseUrl}/test`)
+		const actualRes = await response.json()
+
+		if (actualRes.success) setConnected(true)
+	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -14,7 +28,6 @@ function App() {
 		const body = { name, symbol, description, image }
 
 		alert(JSON.stringify(body))
-
 
 		// todo: add fetch here
 		// const res = await (await fetch('our url', {
@@ -28,6 +41,10 @@ function App() {
 		<div className="container">
 			<Card>
 				<Box as="form" onSubmit={handleSubmit}>
+					{connected
+						? <Text color='green'>Connected</Text>
+						: <Spinner title='Connecting...'></Spinner>
+					}
 					<Image sx={{ width: '50%', margin: 'auto' }} src='/Token_Magician.png'></Image>
 
 					<Label>

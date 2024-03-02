@@ -1,7 +1,7 @@
 {
 	"scripts": {
 		"deploy": "dfx deploy evm_rpc --argument '(record { nodesInSubnet = 28 })' && AZLE_AUTORELOAD=true dfx deploy",
-		"build": "cd src/frontend && VITE_CANISTER_ORIGIN=http://$(dfx canister id backend).localhost:8000 vite build",
+		"build": "cd src/frontend && VITE_CANISTER_ORIGIN=http://$(dfx canister id backend).localhost:4943 vite build",
 		"pretest": "ts-node --transpile-only --ignore=false --skip-project test/pretest.ts",
 		"test": "ts-node --transpile-only --ignore=false --skip-project test/test.ts"
 	},
