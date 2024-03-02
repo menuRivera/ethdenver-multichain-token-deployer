@@ -12,16 +12,22 @@ export const chains: IChain[] = [
 		endpoint: 'https://optimism-sepolia-rpc.publicnode.com',
 		explorer: 'https://sepolia-optimism.etherscan.io/tx'
 	},
-	{
-		name: 'hedera-testnet',
-		chainId: 296,
-		endpoint: 'https://testnet.hashio.io/api',
-		explorer: ''
-	},
 	// {
-	// 	name: 'linea-goerli',
-	// 	chainId: 59140,
-	// 	endpoint: 'https://linea-goerli.blockpi.network/v1/rpc/public',
-	// 	explorer: 'https://goerli.lineascan.build/tx'
+	// 	name: 'hedera-testnet',
+	// 	chainId: 296,
+	// 	endpoint: 'https://testnet.hashio.io/api',
+	// 	explorer: ''
+	// },
+	// // {
+	// // 	name: 'linea-goerli',
+	// // 	chainId: 59140,
+	// // 	endpoint: 'https://linea-goerli.blockpi.network/v1/rpc/public',
+	// // 	explorer: 'https://goerli.lineascan.build/tx'
+	// // }
+	// {
+	// 	name: 'base-sepolia',
+	// 	chainId: 84532,
+	// 	endpoint: 'https://rpc.notadegen.com/base/sepolia',
+	// 	explorer: 'https://sepolia.basescan.org'
 	// }
 ]
