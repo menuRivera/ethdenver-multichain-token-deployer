@@ -103,7 +103,7 @@ textarea {
   border: 1px solid #535bf2;
   border-radius: 4px;
   background-color: #ffffff;
-  color: #ffffff;
+  color: #000000;
 }
 
 button[type="submit"] {

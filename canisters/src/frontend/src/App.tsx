@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
@@ -11,6 +11,26 @@ function App() {
     external_url: '',
     attributes: [],
   });
+
+  useEffect(() => {
+    // Fetch data when the component mounts
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/data'); // Replace with your actual API endpoint
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        // Update the state with the fetched data
+        setFormData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // The empty dependency array ensures this effect runs only once on mount
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +57,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Add logic to handle form submission, e.g., send data to server
+    // fetch(url, {method, body})
     console.log('Form submitted:', formData);
   };
 
