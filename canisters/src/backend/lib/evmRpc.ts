@@ -1,20 +1,19 @@
 // https://internetcomputer.org/docs/current/developer-docs/multi-chain/ethereum/evm-rpc
 import { serialize } from "azle";
 import { ThresholdECDSA } from "./thresholdECDSA";
-import { chains } from "../utils/chains";
 import { IChain } from "../types/chain";
 import { IJsonRpcBody, IJsonRpcResponse } from "../types/jsonrpc";
 import { EthMethod } from "../types/ethMethods";
 
 export class EvmRpc {
 	private address: string;
-	private thresholdSigner: ThresholdECDSA;
+	thresholdSigner: ThresholdECDSA;
 	chain: IChain;
 
-	constructor(thresholdSigner: ThresholdECDSA, chainName: string) {
+	constructor(thresholdSigner: ThresholdECDSA, chain: IChain) {
 		this.address = 'icp://bkyz2-fmaaa-aaaaa-qaaaq-cai';
 		this.thresholdSigner = thresholdSigner;
-		this.chain = chains.find(chain => chain.name === chainName)!
+		this.chain = chain
 	}
 
 	private async call(method: EthMethod, params: any[]) {
@@ -44,7 +43,7 @@ export class EvmRpc {
 		if (!('Ok' in res)) {
 			throw { message: JSON.stringify(res) }
 		}
-		return res.Ok as IJsonRpcResponse
+		return JSON.parse(res.Ok) as IJsonRpcResponse
 	}
 
 	getTransactionCount() {
