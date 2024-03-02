@@ -9,17 +9,19 @@ function App() {
 	const [symbol, setSymbol] = useState('')
 	const [description, setDescription] = useState('')
 	const [image, setImage] = useState('')
-	const [connected, setConnected] = useState(false)
+	const [canisterAddress, setCansiterAddress] = useState('')
 
 	useEffect(() => {
 		getServerStatus()
 	})
 
 	const getServerStatus = async () => {
-		const response = await fetch(`${baseUrl}/test`)
+		const response = await fetch(`${baseUrl}/get-address`, {
+			method: 'POST'
+		})
 		const actualRes = await response.json()
 
-		if (actualRes.success) setConnected(true)
+		if (actualRes.success) setCansiterAddress(actualRes.data)
 	}
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -42,8 +44,8 @@ function App() {
 			<Card>
 				<Box as="form" onSubmit={handleSubmit}>
 
-					{connected
-						? <Text color='green'>Connected</Text>
+					{canisterAddress
+						? <Text color='green'>Connected, canister evm address: {canisterAddress}</Text>
 						: <Spinner title='Connecting...'></Spinner>
 					}
 					<Image sx={{ width: '40%', margin: 'auto' }} src='/Token_Magician.png'></Image>

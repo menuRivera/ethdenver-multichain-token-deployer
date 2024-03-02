@@ -29,7 +29,7 @@ export class ThresholdECDSA {
 // https://github.com/demergent-labs/azle/blob/main/examples/motoko_examples/threshold_ecdsa/src/index.ts
 async function getPublicKey() {
 	console.log('getPublicKey')
-	const caller = ic.id().toUint8Array()
+	// const caller = ic.id().toUint8Array()
 
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/ecdsa_public_key`,
@@ -38,7 +38,7 @@ async function getPublicKey() {
 				args: [
 					{
 						canister_id: [],
-						derivation_path: [caller],
+						derivation_path: [],
 						key_id: {
 							curve: { secp256k1: null },
 							name: 'dfx_test_key'
@@ -54,7 +54,7 @@ async function getPublicKey() {
 
 async function signMessage(messageHash: Uint8Array) {
 	// const caller = ic.caller().toUint8Array()
-	const caller = ic.id().toUint8Array()
+	// const caller = ic.id().toUint8Array()
 
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/sign_with_ecdsa`,
@@ -63,7 +63,7 @@ async function signMessage(messageHash: Uint8Array) {
 				args: [
 					{
 						message_hash: messageHash,
-						derivation_path: [caller],
+						derivation_path: [],
 						key_id: {
 							curve: { secp256k1: null },
 							name: 'dfx_test_key'

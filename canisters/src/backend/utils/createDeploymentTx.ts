@@ -13,7 +13,8 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 	// fill tx values
 	tx.nonce = BigInt((await evmRpc.getTransactionCount()).result)
 	tx.gasPrice = BigInt((await evmRpc.getGasPrice()).result)
-	tx.gasLimit = 50_000;
+	// tx.gasLimit = 107750623;
+	tx.gasLimit = 20000000;
 	tx.to = null
 	tx.value = 0
 	tx.data = bytecode
