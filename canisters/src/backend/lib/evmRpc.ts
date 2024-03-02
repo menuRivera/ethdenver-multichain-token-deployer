@@ -18,8 +18,8 @@ export class EvmRpc {
 
 	/**
 		* Makes a jsonrpc request 
-	* @param method - A valid eth_method like identifier
-	* @param params - An array containing a list of params
+	* @param method - A valid jsonrpc eth_method 
+	* @param params - An array containing the list of params
 	*/
 	private async call(method: EthMethod, params: any[]) {
 		console.log(`EvmRpc.call for ${method}`)
