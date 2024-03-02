@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Card, Image, Input, Label, Spinner, Text } from 'theme-ui';
+import { Button, Card, Flex, Image, Spinner, Text } from 'theme-ui';
 
 const baseUrl = import.meta.env.VITE_CANISTER_ORIGIN
 
 function App() {
-
-	const [name, setName] = useState('')
-	const [symbol, setSymbol] = useState('')
-	const [description, setDescription] = useState('')
-	const [image, setImage] = useState('')
-	const [canisterAddress, setCansiterAddress] = useState('')
+	const [canisterAddress, setCansiterAddress] = useState<string>('')
+	const [txHashes, setTxHashes] = useState<string[]>([])
+	const [loading, setLoading] = useState<boolean>(false)
 
 	useEffect(() => {
-		getServerStatus()
+		if (baseUrl) {
+			getServerStatus()
+		}
 	})
 
 	const getServerStatus = async () => {
@@ -24,52 +23,39 @@ function App() {
 		if (actualRes.success) setCansiterAddress(actualRes.data)
 	}
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
+	const deploy = async () => {
+		setLoading(true)
+		const response = await fetch(`${baseUrl}/tokens`, {
+			method: 'POST'
+		})
+		const actualRes = await response.json()
 
-		const body = { name, symbol, description, image }
+		if (!actualRes.success) alert('something went wrong')
 
-		alert(JSON.stringify(body))
-
-		// todo: add fetch here
-		// const res = await (await fetch('our url', {
-		// 	method: 'POST',
-		// 	body: JSON.stringify(fetch),
-		// 	headers: { 'Content-Type': 'application/json' }
-		// })).json()
-	};
+		// @ts-ignore no time for typing
+		setTxHashes(actualRes.data.map(tx => tx.explorer))
+		setLoading(false)
+	}
 
 	return (
 		<div className="container">
 			<Card>
-				<Box as="form" onSubmit={handleSubmit}>
-
+				<Flex sx={{ flexDirection: 'column' }}>
 					{canisterAddress
 						? <Text color='green'>Connected, canister evm address: {canisterAddress}</Text>
 						: <Spinner title='Connecting...'></Spinner>
 					}
-					<Image sx={{ width: '40%', margin: 'auto' }} src='/Token_Magician.png'></Image>
+					<Image sx={{ width: '40%', margin: '15px auto' }} src='/Token_Magician.png'></Image>
 
-					<Label>
-						Name
-						<Input onChange={(e) => setName(e.target.value)} />
-					</Label>
-					<Label>
-						Symbol
-						<Input onChange={(e) => setSymbol(e.target.value)} />
-					</Label>
-					<Label>
-						Description
-						<Input onChange={(e) => setDescription(e.target.value)} />
-					</Label>
-					<Label>
-						Image url
-						<Input onChange={(e) => setImage(e.target.value)} />
-					</Label>
+					<Button sx={{ backgroundColor: 'darkblue' }} onClick={deploy} variant='dark'>Deploy on multiple blockchains</Button>
 
-
-					<Button sx={{ backgroundColor: 'darkblue' }} type='submit' variant='dark'>Submit</Button>
-				</Box>
+					{loading
+						? <>
+							{txHashes.map(txHash => <a key={txHash}>{txHash}</a>)}
+						</>
+						: <Spinner />
+					}
+				</Flex>
 			</Card>
 		</div>
 	);
