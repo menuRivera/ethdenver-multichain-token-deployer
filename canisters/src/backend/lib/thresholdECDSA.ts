@@ -1,5 +1,4 @@
 import { ic, serialize } from "azle";
-import { managementCanister } from 'azle/canisters/management'
 import { ethers } from "ethers";
 
 export class ThresholdECDSA {
@@ -22,7 +21,7 @@ export class ThresholdECDSA {
 		}
 
 		const signatureResult = await getSignatureResult(messageHash)
-		return signatureResult
+		return signatureResult.signature
 	}
 }
 
@@ -75,5 +74,6 @@ async function getSignatureResult(messageHash: Uint8Array) {
 		}
 	);
 
-	return await publicKeyResponse.json();
+	const res = await publicKeyResponse.json();
+	return res as { signature: Uint8Array }
 }

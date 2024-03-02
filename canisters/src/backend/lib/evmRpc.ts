@@ -1,17 +1,10 @@
 // https://internetcomputer.org/docs/current/developer-docs/multi-chain/ethereum/evm-rpc
 import { serialize } from "azle";
 import { ThresholdECDSA } from "./thresholdECDSA";
-import { IChain, chains } from "../utils/chains";
-import { ethers } from "ethers";
-
-// canister native evm rpc methods 
-enum EthMethod {
-	getTransactionCount = 'eth_getTransactionCount',
-	sendRawTransaction = 'eth_sendRawTransaction',
-	getTransactionReceipt = 'eth_getTransactionReceipt',
-	estimateGas = 'eth_estimateGas',
-	gasPrice = 'eth_gasPrice',
-}
+import { chains } from "../utils/chains";
+import { IChain } from "../types/chain";
+import { IJsonRpcBody, IJsonRpcResponse } from "../types/jsonrpc";
+import { EthMethod } from "../types/ethMethods";
 
 export class EvmRpc {
 	private address: string;
@@ -26,34 +19,32 @@ export class EvmRpc {
 
 	private async call(method: EthMethod, params: any[]) {
 		console.log('EvmRpc.callCustom() called')
+		const body: IJsonRpcBody = {
+			jsonrpc: '2.0',
+			method,
+			params,
+			id: 1
+		}
 		const response = await fetch(`${this.address}/request`, {
 			body: serialize({
 				candidPath: '/src/evm_rpc.did',
 				args: [
 					// JsonRpcSource
-					// { Chain: this.chain.chainId },
-					{
-						Custom: {
-							url: this.chain.endpoint,
-							headers: []
-							// headers: [{ name: 'Content-Type', value: 'application/json' }]
-						}
-					},
-					// text?
-					JSON.stringify({
-						jsonrpc: '2.0',
-						method,
-						params,
-						id: 1
-					}),
-					// nat64?
+					{ Custom: { url: this.chain.endpoint, headers: [] } },
+					// body (text)
+					JSON.stringify(body),
+					// number?
 					1000
 				],
 				cycles: 1_000_000_000
 
 			})
 		})
-		return response.json()
+		const res = await response.json()
+		if (!('Ok' in res)) {
+			throw { message: JSON.stringify(res) }
+		}
+		return res.Ok as IJsonRpcResponse
 	}
 
 	getTransactionCount() {
@@ -65,11 +56,10 @@ export class EvmRpc {
 	getTransactionReceipt(txHash: string) {
 		return this.call(EthMethod.getTransactionReceipt, [txHash])
 	}
-	sendRawTransaction(signedTx: string) {
-		this.call(EthMethod.sendRawTransaction, [signedTx])
-	}
-
 	getGasPrice() {
 		return this.call(EthMethod.gasPrice, [])
+	}
+	sendRawTransaction(signedTx: string) {
+		return this.call(EthMethod.sendRawTransaction, [signedTx])
 	}
 }

@@ -1,8 +1,4 @@
-export interface IChain {
-	name: string,
-	chainId: number,
-	endpoint: string
-}
+import { IChain } from "../types/chain";
 
 export const chains: IChain[] = [
 	{
