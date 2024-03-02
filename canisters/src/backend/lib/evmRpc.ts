@@ -1,8 +1,9 @@
 // https://internetcomputer.org/docs/current/developer-docs/multi-chain/ethereum/evm-rpc
-
 import { serialize } from "azle";
 import { ThresholdECDSA } from "./thresholdECDSA";
+import { IChain, chains } from "../utils/chains";
 
+// canister native evm rpc methods 
 enum EthMethod {
 	getTransactionCount = 'eth_getTransactionCount',
 	sendRawTransaction = 'eth_sendRawTransaction',
@@ -10,22 +11,25 @@ enum EthMethod {
 	estimateGas = 'eth_estimateGas',
 }
 
-class EvmRpc {
-	thresholdSigner: ThresholdECDSA;
+export class EvmRpc {
 	private address: string;
+	private thresholdSigner: ThresholdECDSA;
+	chain: IChain;
 
-	constructor(thresholdSigner: ThresholdECDSA) {
-		this.thresholdSigner = thresholdSigner
-		this.address = 'icp://be2us-64aaa-aaaaa-qaabq-cai'
+	constructor(thresholdSigner: ThresholdECDSA, chainName: string) {
+		this.address = 'icp://be2us-64aaa-aaaaa-qaabq-cai';
+		this.thresholdSigner = thresholdSigner;
+		this.chain = chains.find(chain => chain.name === chainName)!
 	}
 
-	private async call(ethMethod: EthMethod, params: any) {
+	private async callNative(ethMethod: EthMethod, params: any) {
+		console.log('EvmRpc.callNative() called')
 		const response = await fetch(`${this.address}/${ethMethod}`,
 			{
 				body: serialize({
 					candidPath: '/src/evm_rpc.did',
 					args: [
-						{ EthSepolia: [[{ Alchemy: null }, { Ankr: null }]] },
+						{ Custom: chains[0] }, // change this
 						[],
 						params
 					],
@@ -36,16 +40,45 @@ class EvmRpc {
 		return response.json();
 	}
 
-	// canister native
+	private async callCustom(method: string, params: any[]) {
+		console.log('EvmRpc.callCustom() called')
+		const response = await fetch(`${this.address}/request`, {
+			body: serialize({
+				candidPath: '/src/evm_rpc.did',
+				args: [
+					// JsonRpcSource
+					{ Chain: this.chain.chainId },
+					// text?
+					JSON.stringify({
+						jsonrpc: '2.0',
+						method,
+						params,
+						id: 1
+					}),
+					// nat64?
+					1000
+				],
+				cycles: 1_000_000_000
+
+			})
+		})
+		return response.json()
+	}
+
 	getTransactionCount() {
-		return this.call(EthMethod.getTransactionCount, {
+		return this.callNative(EthMethod.getTransactionCount, {
 			address: this.thresholdSigner.publicKey,
-			block: {
-				Latest: null
-			}
+			block: { Latest: null }
 		})
 	}
-	async sendRawTransaction() { } // canister native
-	async getTransactionReceipt() { } //canister native
-	// async estimateGas() { } // manual implementation
+	getTransactionReceipt(txHash: string) {
+		return this.callNative(EthMethod.getTransactionReceipt, txHash)
+	}
+	sendRawTransaction(tx: string) {
+		// todo: validate tx
+		return this.callNative(EthMethod.sendRawTransaction, tx)
+	}
+	getGasPrice() {
+		return this.callCustom('eth_gasPrice', [])
+	}
 }

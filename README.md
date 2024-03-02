@@ -1,7 +1,8 @@
 # MULTICHAIN TOKEN DEPLOYER
-Deploy an ERC-721 token to multiple chains using the threshold ECDSA keypairs from ICP.
+Deploy an ERC-721 token to multiple chains using the threshold ECDSA signatures from ICP.
 
 ## How it works
+The project takes advantage of the threshold ECDSA signatures to deploy a given smart contract (nft-contract) to multiple chains, it does so by leveraging json rpc interactions the evm_rpc ICP canister.
 
 ## Project structure
 - canisters/ -> azle project that holds ICP canisters
@@ -15,8 +16,7 @@ Deploy an ERC-721 token to multiple chains using the threshold ECDSA keypairs fr
 1. Start ICP relica with `dfx start --clean`
 2. `cd canisters`
 3. Install dependencies with `npm install`
-4. Deploy evm_rpc canister with `dfx deploy evm_rpc --argument '(record { nodesInSubnet = 28 })'`
-5. Deploy backend canister with `dfx deploy`
+5. Deploy canisters running `npm run deploy`
  
 ## Contributors
 - [Manuel Rivera](https://github.com/menuRivera)
