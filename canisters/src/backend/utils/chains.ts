@@ -9,11 +9,19 @@ export const chains: IChain[] = [
 	{
 		name: 'optimism-sepolia',
 		chainId: 11155420,
-		endpoint: 'https://optimism-sepolia-rpc.publicnode.com'
+		endpoint: 'https://optimism-sepolia-rpc.publicnode.com',
+		explorer: 'https://sepolia-optimism.etherscan.io/tx'
+	},
+	{
+		name: 'hedera-testnet',
+		chainId: 296,
+		endpoint: 'https://testnet.hashio.io/api',
+		explorer: ''
 	},
 	// {
-	// 	name: 'hedera-previewnet',
-	// 	chainId: 297,
-	// 	endpoint: 'https://previewnet.hashio.io/api'
-	// },
+	// 	name: 'linea-goerli',
+	// 	chainId: 59140,
+	// 	endpoint: 'https://linea-goerli.blockpi.network/v1/rpc/public',
+	// 	explorer: 'https://goerli.lineascan.build/tx'
+	// }
 ]

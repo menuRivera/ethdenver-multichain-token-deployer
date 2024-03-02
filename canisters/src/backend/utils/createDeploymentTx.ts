@@ -14,7 +14,8 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 	tx.nonce = BigInt((await evmRpc.getTransactionCount()).result)
 	tx.gasPrice = BigInt((await evmRpc.getGasPrice()).result)
 	// tx.gasLimit = 107750623;
-	tx.gasLimit = 20000000;
+	// tx.gasLimit = 20000000;
+	tx.gasLimit = 15000000;
 	tx.to = null
 	tx.value = 0
 	tx.data = bytecode
@@ -58,6 +59,7 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 
 	return {
 		chain: evmRpc.chain.chainId,
+		explorer: `${evmRpc.chain.explorer}/${response.result}`,
 		txHash: response.result as string
 	}
 }

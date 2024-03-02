@@ -3,7 +3,6 @@ import { Server } from 'azle';
 import { EvmRpc } from './lib/evmRpc';
 import { ThresholdECDSA } from './lib/thresholdECDSA';
 import { chains } from './utils/chains';
-import { ethers } from 'ethers';
 import { createDeploymentTx } from './utils/createDeploymentTx';
 
 export default Server(() => {
@@ -11,7 +10,7 @@ export default Server(() => {
 	app.use(express.json());
 
 	app.get('/test', (req, res) => {
-		res.json({ success: true, version: '5' })
+		res.json({ success: true, version: '9' })
 	})
 
 	app.post('/tokens', async (req, res) => {
