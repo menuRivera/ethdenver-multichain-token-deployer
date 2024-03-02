@@ -11,7 +11,7 @@ export default Server(() => {
 	app.use(express.json());
 
 	app.get('/test', (req, res) => {
-		res.json({ success: true, version: '5' })
+		res.json({ success: true, version: '6' })
 	})
 
 	app.post('/tokens', async (req, res) => {

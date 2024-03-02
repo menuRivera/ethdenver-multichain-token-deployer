@@ -13,10 +13,11 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 	// fill tx values
 	tx.nonce = BigInt((await evmRpc.getTransactionCount()).result)
 	tx.gasPrice = BigInt((await evmRpc.getGasPrice()).result)
-	tx.gasLimit = 21_000;
+	tx.gasLimit = 26_000;
 	tx.to = null
 	tx.value = 0
 	tx.data = bytecode
+	tx.chainId = evmRpc.chain.chainId
 
 	console.log('tx filled')
 
@@ -25,6 +26,8 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 	const toSign = ethers.getBytes(usignedSerializedTxHash)
 
 	console.log('to sign created')
+
+	console.log(`tx.from: ${tx.from}`)
 
 	// sign the tx using thresholdECDSA
 	const signed = await evmRpc.thresholdSigner.sign(toSign)
@@ -41,8 +44,14 @@ export const createDeploymentTx = async (evmRpc: EvmRpc) => {
 
 	const toSend = tx.serialized
 
+	console.log(`tx.from: ${tx.from}`)
+
 	// send the tx
 	const response = await evmRpc.sendRawTransaction(toSend)
+
+	if (response.error) {
+		throw response.error
+	}
 
 	console.log('tx sent, response: ', response)
 

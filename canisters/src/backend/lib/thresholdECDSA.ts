@@ -7,7 +7,7 @@ export class ThresholdECDSA {
 
 	async start() {
 		console.log('ThresholdECDSA.start()')
-		const publicKey = await getPublicKeyResult()
+		const publicKey = await getPublicKey()
 
 		this.publicKey = publicKey.public_key
 		this.address = ethers.computeAddress(ethers.hexlify(this.publicKey))
@@ -20,16 +20,16 @@ export class ThresholdECDSA {
 			ic.trap('messageHash must be 32 bytes');
 		}
 
-		const signatureResult = await getSignatureResult(messageHash)
+		const signatureResult = await signMessage(messageHash)
 		return signatureResult.signature
 	}
 }
 
 
 // https://github.com/demergent-labs/azle/blob/main/examples/motoko_examples/threshold_ecdsa/src/index.ts
-async function getPublicKeyResult() {
-	console.log('getPublicKeyResult')
-	const caller = ic.caller().toUint8Array()
+async function getPublicKey() {
+	console.log('getPublicKey')
+	const caller = ic.id().toUint8Array()
 
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/ecdsa_public_key`,
@@ -52,8 +52,9 @@ async function getPublicKeyResult() {
 	return res as { public_key: Uint8Array, chain_code: Uint8Array }
 }
 
-async function getSignatureResult(messageHash: Uint8Array) {
-	const caller = ic.caller().toUint8Array()
+async function signMessage(messageHash: Uint8Array) {
+	// const caller = ic.caller().toUint8Array()
+	const caller = ic.id().toUint8Array()
 
 	const publicKeyResponse = await fetch(
 		`icp://aaaaa-aa/sign_with_ecdsa`,

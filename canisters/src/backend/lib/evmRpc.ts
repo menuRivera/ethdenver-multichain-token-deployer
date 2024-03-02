@@ -16,8 +16,14 @@ export class EvmRpc {
 		this.chain = chain
 	}
 
+	/**
+		* Makes a jsonrpc request 
+	* @param method - A valid eth_method like identifier
+	* @param params - An array containing a list of params
+	*/
 	private async call(method: EthMethod, params: any[]) {
-		console.log('EvmRpc.callCustom() called')
+		console.log(`EvmRpc.call for ${method}`)
+
 		const body: IJsonRpcBody = {
 			jsonrpc: '2.0',
 			method,
