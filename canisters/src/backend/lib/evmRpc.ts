@@ -2,6 +2,7 @@
 import { serialize } from "azle";
 import { ThresholdECDSA } from "./thresholdECDSA";
 import { IChain, chains } from "../utils/chains";
+import { ethers } from "ethers";
 
 // canister native evm rpc methods 
 enum EthMethod {
@@ -56,7 +57,7 @@ export class EvmRpc {
 	// }
 	getTransactionCount() {
 		return this.call(EthMethod.getTransactionCount, [
-			this.thresholdSigner.publicKey,
+			this.thresholdSigner.address,
 			'latest'
 		])
 	}

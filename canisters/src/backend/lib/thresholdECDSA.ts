@@ -1,14 +1,17 @@
 import { ic, serialize } from "azle";
 import { managementCanister } from 'azle/canisters/management'
+import { ethers } from "ethers";
 
 export class ThresholdECDSA {
 	publicKey: Uint8Array | undefined;
+	address: string | undefined;
 
 	async start() {
 		console.log('ThresholdECDSA.start()')
 		const publicKey = await getPublicKeyResult()
 
 		this.publicKey = publicKey.public_key
+		this.address = ethers.computeAddress(ethers.hexlify(this.publicKey))
 	}
 
 	async sign(messageHash: Uint8Array) {
