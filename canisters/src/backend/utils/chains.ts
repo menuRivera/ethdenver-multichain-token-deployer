@@ -18,12 +18,12 @@ export const chains: IChain[] = [
 	// 	endpoint: 'https://testnet.hashio.io/api',
 	// 	explorer: ''
 	// },
-	// // {
-	// // 	name: 'linea-goerli',
-	// // 	chainId: 59140,
-	// // 	endpoint: 'https://linea-goerli.blockpi.network/v1/rpc/public',
-	// // 	explorer: 'https://goerli.lineascan.build/tx'
-	// // }
+	// {
+	// 	name: 'linea-goerli',
+	// 	chainId: 59140,
+	// 	endpoint: 'https://linea-goerli.blockpi.network/v1/rpc/public',
+	// 	explorer: 'https://goerli.lineascan.build/tx'
+	// }
 	// {
 	// 	name: 'base-sepolia',
 	// 	chainId: 84532,

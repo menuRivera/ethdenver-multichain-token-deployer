@@ -49,12 +49,7 @@ function App() {
 
 					<Button sx={{ backgroundColor: 'darkblue' }} onClick={deploy} variant='dark'>Deploy on multiple blockchains</Button>
 
-					{loading
-						? <>
-							{txHashes.map(txHash => <a key={txHash}>{txHash}</a>)}
-						</>
-						: <Spinner />
-					}
+					{txHashes.map(txHash => <a key={txHash}>{txHash}</a>)}
 				</Flex>
 			</Card>
 		</div>
