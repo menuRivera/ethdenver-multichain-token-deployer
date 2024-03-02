@@ -49,8 +49,6 @@ async function getPublicKeyResult() {
 			})
 		}
 	);
-	console.log('response: ', publicKeyResponse)
-
 	const res = await publicKeyResponse.json()
 	return res as { public_key: Uint8Array, chain_code: Uint8Array }
 }

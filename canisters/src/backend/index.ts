@@ -8,21 +8,15 @@ export default Server(() => {
 	app.use(express.json());
 
 	app.get('/test', (req, res) => {
-		res.json({ success: true })
+		res.json({ success: true, version: '1' })
 	})
-
-	app.post('/token', (req, res) => {
-		// todo: deploy the token
-		// must return a list of the chains / addresses deployed
-		res.json({ success: true });
-	});
 
 	app.post('/gasprice', async (req, res) => {
 		try {
 			const thresholdSigner = new ThresholdECDSA()
 			await thresholdSigner.start()
 
-			const evmRpc = new EvmRpc(thresholdSigner, 'ethereum-sepolia')
+			const evmRpc = new EvmRpc(thresholdSigner, 'hedera-previewnet')
 
 			const gasPrice = await evmRpc.getGasPrice()
 			const txCount = await evmRpc.getTransactionCount()

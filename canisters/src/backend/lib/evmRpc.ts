@@ -31,7 +31,14 @@ export class EvmRpc {
 				candidPath: '/src/evm_rpc.did',
 				args: [
 					// JsonRpcSource
-					{ Chain: this.chain.chainId },
+					// { Chain: this.chain.chainId },
+					{
+						Custom: {
+							url: this.chain.endpoint,
+							headers: []
+							// headers: [{ name: 'Content-Type', value: 'application/json' }]
+						}
+					},
 					// text?
 					JSON.stringify({
 						jsonrpc: '2.0',
@@ -49,25 +56,19 @@ export class EvmRpc {
 		return response.json()
 	}
 
-	// getTransactionCount() {
-	// 	return this.callNative(EthMethod.getTransactionCount, {
-	// 		address: this.thresholdSigner.publicKey,
-	// 		block: { Latest: null }
-	// 	})
-	// }
 	getTransactionCount() {
 		return this.call(EthMethod.getTransactionCount, [
 			this.thresholdSigner.address,
 			'latest'
 		])
 	}
-	// getTransactionReceipt(txHash: string) {
-	// 	return this.callNative(EthMethod.getTransactionReceipt, txHash)
-	// }
-	// sendRawTransaction(tx: string) {
-	// 	// todo: validate tx
-	// 	return this.callNative(EthMethod.sendRawTransaction, tx)
-	// }
+	getTransactionReceipt(txHash: string) {
+		return this.call(EthMethod.getTransactionReceipt, [txHash])
+	}
+	sendRawTransaction(signedTx: string) {
+		this.call(EthMethod.sendRawTransaction, [signedTx])
+	}
+
 	getGasPrice() {
 		return this.call(EthMethod.gasPrice, [])
 	}
